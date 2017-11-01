@@ -260,10 +260,9 @@ public class Gear
         return (double)Cog / (double)Chainring;
     }
 
-    private double GearInches()
+    private double GearInches(double diameter)
     {
-        Wheel2 wheel = new Wheel2(this.Rim, this.Tire);
-        return Ratio() * wheel.Diameter();
+        return Ratio() * diameter;
     }
 
     public Gear(int cog, int chainring, int rim, int tire)
@@ -274,11 +273,30 @@ public class Gear
         this.Tire = tire;
     }
 }
+
 public class Wheel
 {
-    private readonly int Cog;
-    private readonly int Chainring;
+    private readonly int Rim;
+    private readonly int Tire;
     private readonly Gear Gear;
+
+    private double Diameter()
+    {
+        return (double)this.Rim + (double)this.Tire * 2;
+    }
+
+    public double GearInches()
+    {
+        return gear.GearInches(Diameter());
+    }
+
+    public Wheel(int cog, int chainring, int rim, int tire)
+    {
+        this.Cog = cog;
+        this.Chainring = chainring;
+        this.Rim = rim;
+        this.Tire = tire;
+    }    
 }
 ```
 ## 依存方向の選択
@@ -293,13 +311,14 @@ public class Wheel
 
 ### コンクリートクラスと抽象クラスの認識
 - 抽象クラスとは「どんなインスタンスとも関連しないもの」
-- 依存性の注入
--
+- 依存性の注入は抽象的なインターフェースを利用しているようなもの
+ー＞インスタンスがどんなメンバ変数を持っているかに関連しない
 
 ### 依存で満載したクラスの拒絶
 - 依存されやすいクラスは避ける
+
 ### 問題のある依存性の発見
 - 依存性の多い/少ない
 - 変更しやすい/しにくい
 で分類
-ー＞
+ー＞4分類
